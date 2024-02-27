@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface User {
-  id: string;
+  _id: string;
   email: string;
-  name: string;
+  username: string;
   pic: string;
   isAdmin: boolean;
 }
@@ -15,9 +15,9 @@ interface UserStore extends User {
 }
 
 const initialUser: User = {
-  id: "",
+  _id: "",
   email: "",
-  name: "",
+  username: "",
   pic: "",
   isAdmin: false,
 };

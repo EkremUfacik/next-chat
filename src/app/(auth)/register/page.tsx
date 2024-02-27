@@ -19,14 +19,18 @@ import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { registerSchema } from "@/lib/validations";
 import { axiosBase } from "@/services/axiosInstance";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
 
 const Register = () => {
   const { toast } = useToast();
+  const router = useRouter();
+  const user = useUser();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
     },
@@ -36,12 +40,14 @@ const Register = () => {
 
   const onSubmit = async (userInfo: z.infer<typeof registerSchema>) => {
     try {
-      const res = await axiosBase.post("register", userInfo);
+      const res = await axiosBase.post("/user/register", userInfo);
       console.log(res.data);
+      user.login(res.data);
       toast({
         description: "Account created",
       });
       form.reset();
+      router.push("/");
     } catch (error) {
       console.log(error);
       toast({
@@ -58,10 +64,10 @@ const Register = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-60">
           <FormField
             control={form.control}
-            name="name"
+            name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Username</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>

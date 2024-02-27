@@ -27,8 +27,6 @@ const Login = () => {
   const { toast } = useToast();
   const user = useUser();
 
-  console.log(user?.id);
-
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -41,12 +39,11 @@ const Login = () => {
 
   const onSubmit = async (userInfo: z.infer<typeof loginSchema>) => {
     try {
-      const res = await axiosBase.post("user/login", userInfo);
+      const res = await axiosBase.post("/user/login", userInfo);
       console.log(res.data);
-      const { _id: id, ...data } = res.data;
-      user.login({ id, ...data });
+      user.login(res.data);
       toast({
-        description: "Account created",
+        description: "Logged in successfully!",
       });
       form.reset();
       router.push("/");
