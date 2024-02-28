@@ -10,8 +10,8 @@ const UsersList = async ({ search }: { search: string }) => {
   console.log(users);
 
   return (
-    <div className="space-y-4">
-      <h1>Chats</h1>
+    <div className="space-y-4 border p-4 h-full rounded-md bg-zinc-100 ">
+      <h1 className="text-lg font-semibold">Chats</h1>
       <SearchInput />
       <div className="space-y-1">
         {users?.map((user) => (

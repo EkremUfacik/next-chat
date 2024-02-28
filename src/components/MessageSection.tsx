@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { axiosBase } from "@/services/axiosInstance";
 import { useUser } from "@/hooks/useUser";
 import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 interface ChatProps {
   chat: Chat;
@@ -16,8 +17,11 @@ interface ChatProps {
 const ChatSection = ({ chat, messages }: ChatProps) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [userMessages, setUserMessages] = useState(messages);
+  console.log(messages);
 
   const user = useUser();
+
+  const reciever = chat.users.filter((u) => u._id !== user._id)[0];
 
   useEffect(() => {
     const socketIo = io("http://localhost:8000");
@@ -67,25 +71,54 @@ const ChatSection = ({ chat, messages }: ChatProps) => {
     setUserMessages((prev) => [...prev, data]);
     (e.target as HTMLFormElement).reset();
   };
+
+  // 2024-02-28T17:45:27.884Z -> tarih bugüne eşitse saat ve dakika göster düne eşitse dün yazsın daha önceyse tarihi göstersin
+
+  const formatDate = (date: string) => {
+    const newDate = new Date(date);
+    const today = new Date();
+    if (newDate.toDateString() === today.toDateString()) {
+      return newDate.toLocaleTimeString().slice(0, 5);
+    } else if (
+      newDate.toDateString() ===
+      new Date(today.setDate(today.getDate() - 1)).toDateString()
+    ) {
+      return "Yesterday " + newDate.toLocaleTimeString().slice(0, 5);
+    } else {
+      return newDate.toLocaleDateString();
+    }
+  };
+
   return (
-    <div className="w-full p-8">
-      <div>
-        {userMessages.map((msg, i) => (
-          <p
-            key={i}
+    <div className="w-full max-h-full flex flex-col justify-between border rounded-md bg-gray-300">
+      <div className="flex items-center gap-2 p-4">
+        <Avatar>
+          <AvatarImage src={reciever.pic} className="object-cover" />
+          <AvatarFallback>User</AvatarFallback>
+        </Avatar>
+        <p className="font-semibold ">{reciever.username}</p>
+      </div>
+      <div className="p-4 space-y-2 min-h-[530px]">
+        {userMessages.map((msg) => (
+          <div
+            key={msg._id}
             className={cn(
-              "text-left",
-              msg.sender._id === user._id && "text-right"
+              "border rounded-md w-fit p-2 bg-slate-200",
+              msg.sender._id === user._id && "ml-auto bg-teal-100"
             )}
           >
-            {msg.content}
-          </p>
+            <p className="pe-20">{msg.content}</p>
+            <p className="text-xs text-end">{formatDate(msg.updatedAt)}</p>
+          </div>
         ))}
       </div>
 
       <form onSubmit={handleSubmit} className="">
-        <Input placeholder="message" name="message" />
-        <Button type="submit">Send</Button>
+        <Input
+          placeholder="Type a message"
+          name="message"
+          className="outline-none hover:bg-gray-50 focus:bg-gray-50 px-4 py-6"
+        />
       </form>
     </div>
   );

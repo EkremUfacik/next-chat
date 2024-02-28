@@ -20,11 +20,8 @@ const UserChat = async ({
   console.log(chat);
 
   return (
-    <div>
-      <h1>UserChat</h1>
-      <div className="flex">
-        <MessageSection chat={chat} messages={messages} />
-      </div>
+    <div className="max-h-full overflow-auto ">
+      <MessageSection chat={chat} messages={messages} />
     </div>
   );
 };

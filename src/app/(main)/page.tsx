@@ -9,15 +9,14 @@ interface HomeProps {
 const Home = ({ searchParams: { search } }: HomeProps) => {
   console.log(search);
   return (
-    <div>
-      <h1>Home</h1>
-      <div className="flex h-full p-4 gap-4">
-        <div className="flex-1">
-          <UsersList search={search} />
-        </div>
-        <div className="flex-[2]">
-          <h1>begin message</h1>
-        </div>
+    <div className="flex h-full p-4 gap-4 pt-20">
+      <div className="flex-1 h-full">
+        <UsersList search={search} />
+      </div>
+      <div className="flex-[2] border flex justify-center items-center bg-zinc-200 rounded-md">
+        <h1 className="text-xl font-semibold">
+          Click on a user to start chatting
+        </h1>
       </div>
     </div>
   );

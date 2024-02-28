@@ -15,8 +15,8 @@ const UserCard = ({ user }: { user: User }) => {
     <div
       key={user._id}
       className={cn(
-        " flex hover:bg-gray-100 cursor-pointer p-2 rounded-lg gap-4 items-center",
-        pathname === `/chat/${user._id}` && "bg-gray-100"
+        " flex hover:bg-gray-200 cursor-pointer p-2 rounded-lg gap-4 items-center",
+        pathname === `/chat/${user._id}` && "bg-gray-200"
       )}
       onClick={handleRoute}
     >
@@ -25,7 +25,7 @@ const UserCard = ({ user }: { user: User }) => {
         <AvatarFallback>User</AvatarFallback>
       </Avatar>
 
-      <p>{user.username}</p>
+      <p className="">{user.username}</p>
     </div>
   );
 };
