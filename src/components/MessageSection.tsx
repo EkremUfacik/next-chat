@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { axiosBase } from "@/services/axiosInstance";
 import { useUser } from "@/hooks/useUser";
+import { cn } from "@/lib/utils";
 
 interface ChatProps {
   chat: Chat;
@@ -67,17 +68,25 @@ const ChatSection = ({ chat, messages }: ChatProps) => {
     (e.target as HTMLFormElement).reset();
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="w-60">
+    <div className="w-full p-8">
+      <div>
+        {userMessages.map((msg, i) => (
+          <p
+            key={i}
+            className={cn(
+              "text-left",
+              msg.sender._id === user._id && "text-right"
+            )}
+          >
+            {msg.content}
+          </p>
+        ))}
+      </div>
+
+      <form onSubmit={handleSubmit} className="">
         <Input placeholder="message" name="message" />
         <Button type="submit">Send</Button>
       </form>
-
-      <div>
-        {userMessages.map((msg, i) => (
-          <p key={i}>{msg.content}</p>
-        ))}
-      </div>
     </div>
   );
 };

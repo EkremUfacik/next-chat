@@ -88,7 +88,7 @@ const Login = () => {
             )}
           />
           <FormDescription>
-            <Link href="/register">Don't have an account?</Link>
+            <Link href="/register">Dont have an account?</Link>
           </FormDescription>
           <Button type="submit" disabled={loading} className="block mx-auto ">
             {loading ? "Submitting..." : "Submit"}

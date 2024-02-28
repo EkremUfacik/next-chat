@@ -1,9 +1,12 @@
+import SearchInput from "@/components/SearchInput";
+import UserCard from "@/components/UserCard";
 import { fetcher } from "@/services/fetcher";
 
-import UserCard from "./UserCard";
-import SearchInput from "./SearchInput";
-
-const UsersList = async ({ search }: { search: string }) => {
+const Users = async ({
+  searchParams: { search },
+}: {
+  searchParams: { search: string };
+}) => {
   console.log(search);
   const users: User[] = await fetcher(`/user?search=${search || ""}`);
 
@@ -22,4 +25,4 @@ const UsersList = async ({ search }: { search: string }) => {
   );
 };
 
-export default UsersList;
+export default Users;
